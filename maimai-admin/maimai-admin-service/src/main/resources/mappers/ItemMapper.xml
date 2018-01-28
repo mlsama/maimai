@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maimai.admin.mapper.ItemMapper">
+	<!--动态查询-->
+	<select id="selectItem" resultType="map" parameterType="item">
+		SELECT i.id,i.title,i.`sell_point` AS sellPoint,
+		i.price, i.num, i.`barcode`, i.`image`,i.`cid`,
+		i.`status`,i.`created`,i.`updated`, c.`name`
+		FROM tb_item AS i,tb_item_cat AS c WHERE i.`cid` = c.`id`
+		<if test="item != null">
+			<if test="item.title != null and item.title !=''">
+				and i.title like CONCAT('%',#{item.title},'%')
+			</if>
+		</if>
+	</select>
+	<!--上,下架-->
+	<update id="updateItemStatus">
+		UPDATE
+		tb_item
+		SET 
+		<choose>
+			<when test="option=='up'">
+				STATUS=1
+			</when>
+			<otherwise>
+				STATUS=2
+			</otherwise>
+		</choose>
+		<where>
+			id IN
+			<if test="list != null">
+				<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+	</update>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:c="http://www.springframework.org/schema/c"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+      				  http://www.springframework.org/schema/beans/spring-beans.xsd
+      				  http://www.springframework.org/schema/mvc
+      				  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      				  http://www.springframework.org/schema/context
+      				  http://www.springframework.org/schema/context/spring-context.xsd
+      				  http://code.alibabatech.com/schema/dubbo
+      				  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 加载属性文件 -->
+    <context:property-placeholder location="classpath:environment.properties"/>
+
+    <!-- 开启MVC注解驱动  handlerMapping、handlerAdatper-->
+    <mvc:annotation-driven/> 
+    
+    <!-- 开启包扫描(处理器) -->
+    <context:component-scan base-package="com.maimai.admin.controller"/>
+    
+    <!-- 配置jsp视图解析器 -->
+    <mvc:view-resolvers>
+    	<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+    </mvc:view-resolvers>
+    
+    <!-- 配置默认的Servlet来处理静态资源 -->
+    <mvc:default-servlet-handler/>
+    
+    <!-- 配置视图控制器 -->
+    <mvc:view-controller path="/" view-name="index"/>
+
+    <!-- 配置文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置文件上传编码 -->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!-- 设置文件上传大小 2MB -->
+        <property name="maxUploadSize" value="2097152"/>
+    </bean>
+    
+    <!-- ################### dubbo服务消费者  ################### -->
+   	<!-- 配置应用名称  -->
+    <dubbo:application name="maimai-admin-web"/>
+
+    <!-- 使用multicast广播注册中心暴露服务地址  224.0.0.0 - 239.255.255.255 -->
+    <!--<dubbo:registry address="multicast://224.1.2.3:8888" />-->
+
+    <!--zookeeper注册中心-->
+    <dubbo:registry protocol="zookeeper" address="192.168.31.22:2181"/>
+    <!-- 生成远程服务代理对象，可以和本地bean一样使用 testService -->
+    <dubbo:reference id="itemCatService"
+    		interface="com.maimai.admin.service.ItemCatService" timeout="60000" check="false"/>
+    <dubbo:reference id="itemService"
+    		interface="com.maimai.admin.service.ItemService" timeout="60000" check="false"/>
+    <dubbo:reference id="contentCategoryService"
+    		interface="com.maimai.admin.service.ContentCategoryService" timeout="60000" check="false"/>
+    <dubbo:reference id="contentService"
+    		interface="com.maimai.admin.service.ContentService" timeout="60000" check="false"/>
+
+ </beans>

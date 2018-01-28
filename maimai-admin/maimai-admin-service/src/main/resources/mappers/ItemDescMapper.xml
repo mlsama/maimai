@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maimai.admin.mapper.ItemDescMapper">
+
+	<select id="selectItemDesc" parameterType="long" resultType="itemDesc">
+		select
+		item_desc as itemDesc
+		from tb_item_desc
+		where item_id = #{id}
+	</select>
+	
+</mapper>

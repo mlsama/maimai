@@ -1,0 +1,29 @@
+
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+.idea/inspectionProfiles/
+.idea/libraries/Maven__com_github_sgroschupf_zkclient_0_1.xml
+.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml
+.idea/libraries/Maven__commons_io_commons_io_2_2.xml
+.idea/libraries/Maven__io_netty_netty_3_7_0_Final.xml
+.idea/libraries/Maven__log4j_log4j_1_2_14.xml
+.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_8.xml
+.idea/libraries/Maven__org_csource_fastdfs_client_1_25_RELEASE.xml
+.idea/uiDesigner.xml
+.idea/workspace.xml
+
+/maimai-parent.iml
+maimai-common/target/
+maimai-admin-web/target/
+/maimai-admin/maimai-admin-interface/target/
+/maimai-admin/maimai-admin-pojo/target/
+/maimai-admin/maimai-admin-service/target/
+/maimai-admin/maimai-admin-mapper/target/
+/maimai-sso-web/target/
+/maimai-sso/maimai-sso-pojo/target/
+/maimai-sso/maimai-sso-service/target/
+/maimai-sso/maimai-sso-interface/target/

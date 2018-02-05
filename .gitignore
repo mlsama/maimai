@@ -27,3 +27,6 @@ maimai-admin-web/target/
 /maimai-sso/maimai-sso-pojo/target/
 /maimai-sso/maimai-sso-service/target/
 /maimai-sso/maimai-sso-interface/target/
+/maimai-search-web/target/
+/maimai-search/maimai-search-interface/target/
+/maimai-search/maimai-search-service/target/

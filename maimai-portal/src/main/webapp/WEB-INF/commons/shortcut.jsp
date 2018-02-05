@@ -3,6 +3,9 @@
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <script type="text/javascript">
 $(function(){
+    //获取当前的页面路径
+    var redirectURL = window.encodeURIComponent(location.href);
+
 	// 查看是否已经登录，如果已经登录查询登录信息
 	var ticket = $.cookie("maimai_ticket");
 	if (ticket){
@@ -12,13 +15,18 @@ $(function(){
 			type : "get",
 			success : function(data){
 				if(data){
-					var html = data.username + "，欢迎来到买买！<a href=\"http://sso.maimai.com/user/logout?redirectURL=${redirectURL}\" class=\"link-logout\">[退出]</a>";
+					var html = data.username + "，欢迎来到买买！" +
+						"<a href=\"http://sso.maimai.com/user/logout?redirectURL="+redirectURL+"\" class=\"link-logout\">[退出]</a>";
 					//替换登陆和注册行
 					$("#loginbar").html(html);
 				}
 			}
 		});
 	}
+	//请求登陆页面.把当前URL发过去,登陆成功后跳到这个页面
+	$("#login_btn").click(function () {
+        location.href = "http://sso.maimai.com/login?redirectURL="+redirectURL;
+    });
 });
 </script>
 <div id="shortcut-2013">
@@ -27,7 +35,7 @@ $(function(){
 			<li class="fore1 ld" clstag="homepage|keycount|home2013|01a"><b></b><a href="javascript:addToFavorite()" rel="nofollow">收藏买买</a></li>
 		</ul>
 		<ul class="fr lh">
-			<li class="fore1" id="loginbar" clstag="homepage|keycount|home2013|01b">您好！欢迎来到买买商城！<a href="http://sso.maimai.com/login?redirectURL=${redirectURL}">[登录]</a>&nbsp;<a href="http://sso.maimai.com/register">[免费注册]</a></li>
+			<li class="fore1" id="loginbar" clstag="homepage|keycount|home2013|01b">您好！欢迎来到买买商城！<a href="javascript:;" id="login_btn">[登录]</a>&nbsp;<a href="http://sso.maimai.com/register">[免费注册]</a></li>
 			<li class="fore2 ld" clstag="homepage|keycount|home2013|01c">
 				<a href="http://jd2008.jd.com/JdHome/OrderList.aspx" rel="nofollow">我的订单</a>
 			</li>

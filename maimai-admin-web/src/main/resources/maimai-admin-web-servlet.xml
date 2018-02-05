@@ -16,7 +16,7 @@
       				  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 加载属性文件 -->
-    <context:property-placeholder location="classpath:environment.properties"/>
+    <context:property-placeholder location="classpath:environment.properties,classpath:activemq.properties"/>
 
     <!-- 开启MVC注解驱动  handlerMapping、handlerAdatper-->
     <mvc:annotation-driven/> 
@@ -62,4 +62,6 @@
     <dubbo:reference id="contentService"
     		interface="com.maimai.admin.service.ContentService" timeout="60000" check="false"/>
 
+    <!--引入其他配置文件-->
+    <import resource="applicationContext-jms.xml"></import>
  </beans>

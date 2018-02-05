@@ -4,33 +4,65 @@ import com.maimai.admin.pojo.Item;
 import com.maimai.admin.pojo.ItemDesc;
 import com.maimai.admin.service.ItemService;
 import com.maimai.common.vo.DataGridResult;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.net.URLDecoder;
 import java.util.Arrays;
 
 /**
  * mlsama
  * 2017/12/10 22:11
- * 描述: 商品控制类
+ * 描述: 商品控制类.添加,修改,删除时发送mq消息同步solr库
  */
 @Controller
 @ResponseBody
 @RequestMapping("/item")
+@Slf4j
 public class ItemController {
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
     /**
-     * 添加商品
+     * 发送消息方法
+     * @param target 执行的操作(save、update、delete)
+     * @param id 商品的id (Long，批量删除时是String)
+     */
+    private void sendItemTopicMessage(final String target,final Object id){
+        jmsTemplate.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                MapMessage mapMessage = new ActiveMQMapMessage();
+                mapMessage.setString("target", target);
+                mapMessage.setObject("id", id);
+                return mapMessage;
+            }
+        });
+    }
+
+    /**
+     * 添加商品:服务层发来的Item是没有id的.所以方法才返回id.
      * @param item
      */
     @RequestMapping("/save")
     public void saveItem(Item item,@RequestParam("desc")String desc){
         try {
-            itemService.saveItem(item,desc);
+            Long id = itemService.saveItem(item,desc);
+            //发送消息同步索引库
+            sendItemTopicMessage("save",id);
+            log.info("发送消息target:{},id:{}","save",id);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -53,6 +85,9 @@ public class ItemController {
     public void updateItem(Item item,@RequestParam("desc")String desc){
         try {
             itemService.updateItem(item,desc);
+            //发送消息同步索引库
+            sendItemTopicMessage("update",item.getId());
+            log.info("发送消息target:{},id:{}","update",item.getId());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -85,6 +120,9 @@ public class ItemController {
         if (StringUtils.isNoneBlank(ids)){
             String[] strId = ids.split(",");
             itemService.deleteBatch("id",strId);
+            //发送消息同步索引库
+            sendItemTopicMessage("delete",ids);
+            log.info("发送消息target:{},ids:{}","delete",ids);
         }else {
             throw new RuntimeException("ids为空");
         }

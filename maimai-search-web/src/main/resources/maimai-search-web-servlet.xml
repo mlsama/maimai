@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      				  http://www.springframework.org/schema/beans/spring-beans.xsd
+      				  http://www.springframework.org/schema/context
+      				  http://www.springframework.org/schema/context/spring-context.xsd
+      				  http://www.springframework.org/schema/mvc
+      				  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      				  http://code.alibabatech.com/schema/dubbo 
+      				  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 配置加载属性文件 -->
+    <context:property-placeholder location="classpath:activemq.properties"/>
+
+    <!-- 配置开启组件扫描 -->
+    <context:component-scan base-package="com.maimai.search.controller"/>
+
+    <!-- 开启MVC注解驱动 -->
+    <mvc:annotation-driven/>
+
+    <!-- 配置视图解析器 -->
+    <mvc:view-resolvers>
+        <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+    </mvc:view-resolvers>
+
+    <!-- 配置静态资源用WEB容器默认的servlet来处理 -->
+    <mvc:default-servlet-handler/>
+
+
+    <!-- ######### dubbo分布式配置(客户端) ############# -->
+    <!-- 当前应用信息配置(应用名称) -->
+    <dubbo:application name="maimai-search-web"/>
+
+    <!-- zookeeper注册中心 -->
+    <dubbo:registry protocol="zookeeper" address="192.168.31.22:2181"/>
+
+    <!-- 引用服务配置 -->
+    <dubbo:reference interface="com.maimai.search.service.ItemSearchService"
+                     id="itemSearchService" timeout="60000" check="false"/>
+    <!-- 引用服务配置 -->
+    <dubbo:reference interface="com.maimai.admin.service.ItemService"
+                     id="itemService" timeout="60000" check="false"/>
+    <!--引入其他配置文件-->
+    <import resource="applicationContext-jms.xml"></import>
+</beans>

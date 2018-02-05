@@ -104,7 +104,7 @@ public class ContentServiceImpl extends BaseServiceImpl<Content>
             redisService.setex(Constant.BIGAD_DATA,result,60*60*24);
             return result;
         }catch (Exception e){
-            throw new RuntimeException("查询大广告数据异常{}"+e);
+            throw new RuntimeException("查询大广告数据异常:{}"+e);
         }
     }
 

@@ -17,9 +17,17 @@ public class ForwordController {
     public String toRegister(){
         return "register";
     }
+
+    /**
+     * 跳到登陆页面
+     * @param redirectURL  跳转前的路径
+     * @param model
+     * @return
+     */
     @GetMapping("/login")
     public String toLogin(@RequestParam(value = "redirectURL",required = false)
                            String redirectURL, Model model){
+        //把当前路径发过去,成功后跳到这个路径
         model.addAttribute("redirectURL",redirectURL);
         return "login";
     }

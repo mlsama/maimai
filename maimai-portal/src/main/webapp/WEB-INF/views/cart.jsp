@@ -74,7 +74,7 @@
 	  	</script>
 	<!--shortcut end-->
 	<div class="w w1 header clearfix">
-		<div id="logo"><a href="http://www.taotao.com/">
+		<div id="logo"><a href="http://www.maimai.com/">
 		<img clstag="clickcart|keycount|xincart|logo" src="/images/taotao-logo.gif" title="返回买买商城首页" alt="返回买买商城首页"/></a></div>
 	    <div class="language"><a href="javascript:void(0);" onclick="toEnCart()"></a></div>
 		<div class="progress clearfix">
@@ -124,13 +124,13 @@
 			            		type="checkbox" name="checkItem" checked="" value="11345721-1"/></div>
 			            <div class="cell p-goods">
 			                <div class="p-img">
-			                	<a href="http://item.taotao.com/${cartItem.itemId }.html" target="_blank">
+			                	<a href="http://item.maimai.com/${cartItem.itemId }.html" target="_blank">
 			                		<img clstag="clickcart|keycount|xincart|p-imglistcart" 
 			                				src="${cartItem.itemImage}" alt="${cartItem.itemTitle}" width="52" height="52"/>
 			                	</a>
 			                </div>    
 			                <div class="p-name">
-			                	<a href="http://item.taotao.com/${cartItem.itemId }.html" clstag="clickcart|keycount|xincart|productnamelink" target="_blank">${cartItem.itemTitle}</a>
+			                	<a href="http://item.maimai.com/${cartItem.itemId }.html" clstag="clickcart|keycount|xincart|productnamelink" target="_blank">${cartItem.itemTitle}</a>
 			                	<span class="promise411 promise411_11345721" id="promise411_11345721"></span>
 			                </div>    
 			            </div>
@@ -176,7 +176,7 @@
 	              </span>
 	              <span class="shopping">
 	                  <b></b>
-	                  <a href="http://www.taotao.com/" target="_blank" clstag="clickcart|keycount|xincart|coudanlink" id="continue">继续购物</a>
+	                  <a href="http://www.maimai.com/" target="_blank" clstag="clickcart|keycount|xincart|coudanlink" id="continue">继续购物</a>
 	              </span>
 	          </div>
 	          <div class="cart-total-2014">

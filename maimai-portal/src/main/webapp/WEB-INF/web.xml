@@ -20,6 +20,10 @@
 		<servlet-name>maimai-portal</servlet-name>
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>maimai-portal</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	<!-- 配置全局编码过滤器 -->
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>

@@ -33,4 +33,13 @@
     <!--引用服务配置(注册中心) -->
     <dubbo:reference id="contentService"
                      interface="com.maimai.admin.service.ContentService" timeout="60000" check="false"/>
+    <!--引用服务配置(注册中心) -->
+    <dubbo:reference id="cartService"
+                     interface="com.maimai.cart.service.CartService" timeout="60000" check="false"/>
+    <!--引用服务配置(注册中心) -->
+    <dubbo:reference id="itemService"
+                     interface="com.maimai.admin.service.ItemService" timeout="60000" check="false"/>
+    <!--引用服务配置(注册中心) -->
+    <dubbo:reference id="userService"
+                     interface="com.maimai.sso.service.UserService" timeout="60000" check="false"/>
 </beans>

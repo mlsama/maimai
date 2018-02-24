@@ -1,19 +1,18 @@
 package com.maimai.sso.controller;
 
-import com.maimai.common.constant.Constant;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maimai.cart.service.CartService;
 import com.maimai.common.cookie.CookieUtils;
 import com.maimai.sso.pojo.User;
 import com.maimai.sso.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -30,7 +29,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private CartService cartService;
+    private ObjectMapper objectMapper = new ObjectMapper();
     /**
      * 注册数据验证(是否已经使用)
      * @param param 验证的数据
@@ -87,6 +88,18 @@ public class UserController {
                         ticket, 3600, false);
                 /** 设置状态码 */
                 data.put("status", 200);
+                /**登陆成功后合并cookie中的购物车数据到redis中*/
+                log.info("开始合并cookie中的购物车数据到redis中");
+                /** 通过cookeName获取指定的cookie的值  [{},{}]*/
+                String cartItemJsonLists = CookieUtils.getCookieValue(request,
+                        CookieUtils.CookieName.MAIMAI_CART, true);
+                //获取ticket用户信息
+                String userString = userService.getUserByTicket(ticket);
+                User u = objectMapper.readValue(userString,User.class);
+                //合并
+                cartService.magreCart(cartItemJsonLists,u.getId());
+                //合并后删除cookie中的购物车
+                CookieUtils.deleteCookie(request,response,CookieUtils.CookieName.MAIMAI_CART);
             }
         }catch(Exception ex){
             ex.printStackTrace();

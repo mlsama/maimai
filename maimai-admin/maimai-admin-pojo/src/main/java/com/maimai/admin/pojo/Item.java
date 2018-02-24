@@ -3,6 +3,7 @@ package com.maimai.admin.pojo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -55,4 +56,11 @@ public class Item implements Serializable {
     /** 更新时间 */
     @Column
     private Date updated;
+
+    public String[] getImages(){
+        if (StringUtils.isNoneBlank(image)){
+            return image.split(",");
+        }
+        return null;
+    }
 }

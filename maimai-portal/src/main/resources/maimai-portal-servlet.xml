@@ -6,16 +6,16 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                            http://www.springframework.org/schema/beans/spring-beans.xsd
-      				         http://www.springframework.org/schema/context
-      				        http://www.springframework.org/schema/context/spring-context.xsd
-      				        http://www.springframework.org/schema/mvc
-                            http://www.springframework.org/schema/mvc/spring-mvc.xsd
-      				        http://code.alibabatech.com/schema/dubbo
-      				        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+      				       http://www.springframework.org/schema/context
+      				       http://www.springframework.org/schema/context/spring-context.xsd
+      				       http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      				       http://code.alibabatech.com/schema/dubbo
+      				       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 配置开启组件扫描 -->
-    <context:component-scan base-package="com.maimai.portal.controller"/>
+    <context:component-scan base-package="com.maimai.portal"/>
     <!-- 开启MVC注解驱动 -->
     <mvc:annotation-driven/>
     <!-- 配置视图解析器 -->
@@ -24,6 +24,21 @@
     </mvc:view-resolvers>
     <!-- 配置静态资源用WEB容器默认的servlet来处理 -->
     <mvc:default-servlet-handler/>
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <!-- 配置登录拦截器 -->
+        <mvc:interceptor>
+            <!-- 配置需要拦截的地址:订单下的操作 -->
+            <mvc:mapping path="/order/**"/>
+            <!--放行静态资源-->
+            <mvc:exclude-mapping path="/css/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/js/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/images/**"></mvc:exclude-mapping>
+            <!-- 配置拦截器Bean -->
+            <bean class="com.maimai.portal.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- ############## dubbo分布式配置(客户端) ############ -->
     <!-- 当前应用信息配置(应用名称) -->
@@ -42,4 +57,7 @@
     <!--引用服务配置(注册中心) -->
     <dubbo:reference id="userService"
                      interface="com.maimai.sso.service.UserService" timeout="60000" check="false"/>
+    <!--引用服务配置(注册中心) -->
+    <dubbo:reference id="orderService"
+                     interface="com.maimai.order.service.OrderService" timeout="60000" check="false"/>
 </beans>

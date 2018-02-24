@@ -30,3 +30,7 @@ maimai-admin-web/target/
 /maimai-search-web/target/
 /maimai-search/maimai-search-interface/target/
 /maimai-search/maimai-search-service/target/
+/maimai-item-web/target/
+/maimai-portal/target/
+/maimai-cart/maimai-cart-interface/target/
+/maimai-cart/maimai-cart-service/target/

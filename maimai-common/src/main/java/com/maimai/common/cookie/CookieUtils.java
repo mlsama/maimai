@@ -19,7 +19,7 @@ public final class CookieUtils {
 		/** 定义存放在Cookie中用户登录票据的名称 */
 		public static final String MAIMAI_TICKET = "maimai_ticket";
 		/** 定义存放在Cookie中购物车的名称 */
-		public static final String MAIMAI_CART = "maimai_cart";
+		public static final String MAIMAI_CART = "maimai_cart_";
 	}
 	
 	

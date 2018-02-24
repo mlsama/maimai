@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      				  http://www.springframework.org/schema/beans/spring-beans.xsd
+      				  http://code.alibabatech.com/schema/dubbo 
+	    			  http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- ########### 分布式服务框架dubbo(引用服务  客户端) ########### -->
+    <!-- 配置服务应用的名称 -->
+    <dubbo:application name="maimai-item-web"/>
+
+    <!-- 使用zookeeper注册中心暴露服务地址  -->
+    <dubbo:registry protocol="zookeeper" address="192.168.31.22:2181"/>
+
+    <!-- 
+      声明需要引用的服务接口  (生成远程服务代理，可以和本地bean一样使用) 
+      interface: 需要引用的服务接口
+    	 id: bean的id
+    	 timeout: 连接注册中心超时时长 60秒
+    -->
+    <dubbo:reference id="itemService"
+                     interface="com.maimai.admin.service.ItemService" timeout="60000" check="false"/>
+</beans>

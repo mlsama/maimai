@@ -31,7 +31,8 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
     //定义ObjectMapper操作json
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 一个用户一个购物车
@@ -178,6 +179,84 @@ public class CartServiceImpl implements CartService {
         }catch (Exception e){
             log.info("根据用户id获取用户购物车异常.");
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 合并购物车
+     * @param cartItemJsonLists cookie中的购物车数据(json格式的字符串)
+     * @param id    用户id
+     */
+    @Override
+    public void magreCart(String cartItemJsonLists, Long id) {
+        try{
+            log.info("合并购物车{},{}",cartItemJsonLists,id);
+            /** 把json字符串，转化成List集合 */
+            List<CartItem> carts = objectMapper.readValue(cartItemJsonLists,
+                    objectMapper.getTypeFactory()
+                            .constructCollectionType(List.class, CartItem.class));
+            //逐个合并
+            for (CartItem cartItem : carts){
+                magreCartByUserId(id, cartItem);
+            }
+        }catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 清空购物车:逻辑有问题
+     * @param userId
+     */
+    @Override
+    public void clearCart(Long userId) {
+        try{
+            /** 定义Redis数据库中的购物车的key */
+            String mycart = CookieUtils.CookieName.MAIMAI_CART + userId;
+            redisTemplate.delete(mycart);
+        }catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 合并一个商品
+     * @param id 用户id
+     * @param cookieCartItem    cookie中的一个商品
+     */
+    private void magreCartByUserId(Long id, CartItem cookieCartItem) {
+        try{
+            /** 定义Redis数据库中的购物车的key */
+            String mycart = CookieUtils.CookieName.MAIMAI_CART + id;
+            //获取cookie中的商品的id
+            String field = cookieCartItem.getItemId().toString();
+            //用cookie中的商品的id去redis中获取商品
+            String cartItemJsonStr =
+                    redisTemplate.boundHashOps(mycart).get(field).toString();
+            /** 定义购物车中的商品对象 */
+            CartItem cartItem = null;
+            //如果redis中有这个商品
+            if (StringUtils.isNoneBlank(cartItemJsonStr)){
+                /**数量叠加*/
+                /** 把购物车的中商品转化成CartItem对象 */
+                cartItem = objectMapper.readValue(cartItemJsonStr, CartItem.class);
+                /** 设置购买数量 */
+                cartItem.setNum(cartItem.getNum() + cookieCartItem.getNum());
+                /** 设置修改时间 */
+                cartItem.setUpdated(new Date());
+            }else{
+                /** #### 购物车中没有该商品，新增 ####*/
+                cartItem = cookieCartItem;
+                /** 设置修改时间 */
+                cartItem.setUpdated(new Date());
+                /** 设置用户编号:必须,因为cookie中的CartItem是没有用户id的 */
+                cartItem.setUserId(id);
+            }
+            /** 添加商品到购物车(Redis数据库中) */
+            redisTemplate.boundHashOps(mycart)
+                    .put(field, objectMapper.writeValueAsString(cartItem));
+        }catch(Exception ex){
+            throw new RuntimeException(ex);
         }
     }
 

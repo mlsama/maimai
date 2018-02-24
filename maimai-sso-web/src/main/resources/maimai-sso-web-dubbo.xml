@@ -19,7 +19,10 @@
     	interface: 需要引用的服务接口
     	id: bean的id
     	timeout: 连接注册中心超时时长 60秒
+    	check="false" :不检查
     -->
     <dubbo:reference interface="com.maimai.sso.service.UserService"
                      id="userService" timeout="60000" check="false"/>
+    <dubbo:reference interface="com.maimai.cart.service.CartService"
+                     id="cartService" timeout="60000" check="false"/>
 </beans>

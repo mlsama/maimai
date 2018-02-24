@@ -18,4 +18,8 @@ public interface CartService {
     void deleteCartByUserId(Long id, Long itemId);
 
     List<CartItem> findCartBuUserId(Long id);
+
+    void magreCart(String cartItemJsonLists, Long id);
+
+    void clearCart(Long id);
 }

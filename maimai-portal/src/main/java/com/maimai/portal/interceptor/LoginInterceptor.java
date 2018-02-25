@@ -34,7 +34,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
-        System.out.println("触发订单拦截器.");
+        log.info("触发订单拦截器.");
         /** 从Cookie中获取登录票据ticket */
         String ticket = CookieUtils.getCookieValue(request,
                 CookieUtils.CookieName.MAIMAI_TICKET, false);
@@ -49,17 +49,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
         //没有登陆
-        //获取请求路径
-        String requestURL = request.getRequestURL().toString();
         //获取当前路径?后面的参数
         String queryParam = request.getQueryString();
+        //获取请求路径
+        String requestURL = request.getRequestURL().toString();
         if (StringUtils.isNoneBlank(queryParam)){
             requestURL += "?"+ queryParam;
         }
-        System.out.println("重定向路径:"+ requestURL);
+        log.info("重定向路径{}:",requestURL);
         // 跳到登陆页面,把拦截的路径也发过去,登陆成功后进行跳转
-        response.sendRedirect("http//sso.maimai.com/login?redirectURL="+ URLEncoder.encode(requestURL,"utf-8"));
+        response.sendRedirect("http://sso.maimai.com/login?redirectURL="+ URLEncoder.encode(requestURL,"utf-8"));
         return false;
     }
-
 }

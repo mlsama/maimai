@@ -30,7 +30,7 @@
                      javaType="OrderShipping"
                      column="order_id"
                      fetchType="eager"
-                     select="com.maimai.order.mapper.OrderShippingMapper.getOrderShippingByOrderId"/>
+                     select="com.maimai.order.mapper.OrderShippingMapper.findOrderShippingByOrderId"/>
         <!-- 订单 与  订单商品 存在一对多关联
              property : 指定关联的属性名
              javaType: 指定属性的java类型
@@ -42,7 +42,7 @@
                     ofType="OrderItem"
                     column="order_id"
                     fetchType="eager"
-                    select="com.maimai.order.mapper.OrderItemMapper.getOrderItemByOrderId"/>
+                    select="com.maimai.order.mapper.OrderItemMapper.findOrderItemByOrderId"/>
     </resultMap>
     <!-- 根据订单id查询订单 -->
     <select id="getOrderByOrderId" resultMap="orderMap">

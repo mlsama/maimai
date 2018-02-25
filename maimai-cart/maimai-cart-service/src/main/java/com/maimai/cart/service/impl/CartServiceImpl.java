@@ -158,7 +158,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartItem> findCartBuUserId(Long userId) {
         try {
-            log.info("查询用户购物车商品id{}",userId);
+            log.info("查询用户购物车商品id:{}",userId);
             //定义购物车的名称
             String myCart = CookieUtils.CookieName.MAIMAI_CART + userId;
             /** 获取购物车中所有的商品 */
@@ -231,15 +231,15 @@ public class CartServiceImpl implements CartService {
             //获取cookie中的商品的id
             String field = cookieCartItem.getItemId().toString();
             //用cookie中的商品的id去redis中获取商品
-            String cartItemJsonStr =
-                    redisTemplate.boundHashOps(mycart).get(field).toString();
+            Object cartItemJsonStr =
+                    redisTemplate.boundHashOps(mycart).get(field);
             /** 定义购物车中的商品对象 */
             CartItem cartItem = null;
             //如果redis中有这个商品
-            if (StringUtils.isNoneBlank(cartItemJsonStr)){
+            if (cartItemJsonStr != null){
                 /**数量叠加*/
                 /** 把购物车的中商品转化成CartItem对象 */
-                cartItem = objectMapper.readValue(cartItemJsonStr, CartItem.class);
+                cartItem = objectMapper.readValue(cartItemJsonStr.toString(), CartItem.class);
                 /** 设置购买数量 */
                 cartItem.setNum(cartItem.getNum() + cookieCartItem.getNum());
                 /** 设置修改时间 */

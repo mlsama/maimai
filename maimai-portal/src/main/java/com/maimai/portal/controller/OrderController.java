@@ -93,8 +93,7 @@ public class OrderController {
         Order order = orderService.getOrderByOrderId(orderId);
         model.addAttribute("order",order);
         //送达时间延后2天:使用时间操作框架
-        String data = DateTime.now().plusDays(2).toString("MM月dd日");
-        model.addAttribute("data",data);
+        model.addAttribute("date",DateTime.now().plusDays(2).toString("MM月dd日"));
         return "success";
     }
 }

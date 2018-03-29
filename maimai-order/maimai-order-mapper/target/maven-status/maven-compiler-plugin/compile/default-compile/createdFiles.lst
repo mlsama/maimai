@@ -1,0 +1,3 @@
+com\maimai\order\mapper\OrderItemMapper.class
+com\maimai\order\mapper\OrderMapper.class
+com\maimai\order\mapper\OrderShippingMapper.class

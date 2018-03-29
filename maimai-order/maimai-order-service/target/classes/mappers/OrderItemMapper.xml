@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maimai.order.mapper.OrderItemMapper">
+    <!-- 根据订单编号查询订单商品 -->
+    <select id="findOrderItemByOrderId" resultType="OrderItem">
+        select * from tb_order_item where order_id = #{orderId}
+    </select>
+
+</mapper>

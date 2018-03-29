@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * mlsama
+ * author：mlsama
  * 2017/12/10 22:24
  * 描述:商品实现类
  */

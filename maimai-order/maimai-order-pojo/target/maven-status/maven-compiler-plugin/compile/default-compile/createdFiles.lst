@@ -1,0 +1,3 @@
+com\maimai\order\pojo\Order.class
+com\maimai\order\pojo\OrderItem.class
+com\maimai\order\pojo\OrderShipping.class

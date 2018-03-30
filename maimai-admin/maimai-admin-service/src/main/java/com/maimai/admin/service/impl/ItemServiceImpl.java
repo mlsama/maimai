@@ -32,8 +32,8 @@ public class ItemServiceImpl extends BaseServiceImpl<Item>
 
     /**
      * 添加商品
-     * @param item
-     * @param desc
+     * @param item 商品对象
+     * @param desc  商品描述
      */
     @Override
     public Long saveItem(Item item, String desc) {
